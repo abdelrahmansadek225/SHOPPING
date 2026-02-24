@@ -51,9 +51,11 @@ class _SignupScreenState extends State<SignupScreen> {
                 // AppBar بسيط (menu + settings)
                 Row(
                   children: [
-                    IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.menu_rounded)),
+                    IconButton(onPressed: () => Navigator.pop(context), 
+                    icon: const Icon(Icons.menu_rounded)),
                     const Spacer(),
-                    IconButton(onPressed: () {}, icon: const Icon(Icons.settings_outlined)),
+                    IconButton(onPressed: () {},
+                     icon: const Icon(Icons.settings_outlined)),
                   ],
                 ),
                 const SizedBox(height: 6),
@@ -65,7 +67,7 @@ class _SignupScreenState extends State<SignupScreen> {
             
 TextFormField(
                   validator: (value) {
-                    if (value == null || value.isEmpty) return 'invalid email';
+                    if (value == null || value.isEmpty) return 'invalid name';
                     return null;
                   },                  controller: name,
                   textCapitalization: TextCapitalization.words,
@@ -91,7 +93,7 @@ TextFormField(
             
 TextFormField(
                   validator: (value) {
-                    if (value == null || value.isEmpty) return 'invalid email';
+                    if (value == null || value.isEmpty) return 'invalid password';
                     return null;
                   },                  controller: pass,
                   obscureText: obscure,
