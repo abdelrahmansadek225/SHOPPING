@@ -109,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 // Password + eye
                 TextFormField(
                   validator: (value) {
-                    if (value == null || value.isEmpty) return 'invalid email';
+                    if (value == null || value.isEmpty) return 'invalid password';
                     return null;
                   },
                   controller: pass,
