@@ -13,18 +13,19 @@ class HomeScreen extends StatelessWidget {
     final items = context.watch<ShopProvider>().products;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Welcome,'),
-        actions: [
-          IconButton(
-            onPressed: () => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (_) => const LoginScreen()),
-            ),
-            icon: const Icon(Icons.logout),
-          )
-        ],
-      ),
+     appBar: AppBar(
+  title: const Text('Welcome'),
+  actions: [
+
+    // ❌ BUG 10: not formatted + no currency
+    Center(child: Text(provider.total.toString())),
+
+    IconButton(
+      onPressed: () {},
+      icon: const Icon(Icons.logout),
+    )
+  ],
+),
       body: GridView.builder(
         padding: const EdgeInsets.all(12),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

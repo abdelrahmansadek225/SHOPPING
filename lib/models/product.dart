@@ -1,8 +1,9 @@
-// lib/models/product.dart
 class Product {
   final String id;
   final String title;
-  final String price;     
+
+  final String price;
+
   final String imageUrl;
   final String description;
 
