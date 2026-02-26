@@ -17,19 +17,23 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
+    // ❌ BUG 1 – forgot to dispose password controller
     email.dispose();
-    pass.dispose();
     super.dispose();
   }
 
   void _login() {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('Logged in (demo)')));
+
+    // ❌ BUG 2 – SnackBar shown before validation
+    ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text('Logged in (demo)')));
+
     if (_formkey.currentState!.validate()) {
-      Navigator.pushReplacement(
+
+      // ❌ BUG 3 – using push instead of pushReplacement
+      Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
       );
     }
   }
@@ -37,7 +41,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // خلفية فاتحة لطيفة
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -52,68 +55,39 @@ class _LoginScreenState extends State<LoginScreen> {
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
               children: [
-                // AppBar بسيط (menu + settings)
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.menu_rounded),
-                    ),
-                    const Spacer(),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.settings_outlined),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
 
-                // Logo دائري
-                Center(
-                  child: Container(
-                    width: 130,
-                    height: 130,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: const Color(0xFFE0E2EF),
-                        width: 3,
-                      ),
-                    ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.shopping_bag_outlined,
-                        size: 54,
-                        color: Colors.pinkAccent,
-                      ),
-                    ),
-                  ),
-                ),
                 const SizedBox(height: 30),
 
                 // Email
                 TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) return 'invalid email';
-                    return null;
-                  },
                   controller: email,
                   keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    // ❌ BUG 4 – very weak validation
+                    if (value == null || value.isEmpty) {
+                      return 'invalid email';
+                    }
+                    return null;
+                  },
                   decoration: const InputDecoration(
                     labelText: 'Email',
                     prefixIcon: Icon(Icons.mail_outline),
                   ),
                 ),
+
                 const SizedBox(height: 12),
 
-                // Password + eye
+                // Password
                 TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) return 'invalid email';
-                    return null;
-                  },
                   controller: pass,
                   obscureText: obscure,
+                  validator: (value) {
+                    // ❌ BUG 5 – wrong validation message
+                    if (value == null || value.isEmpty) {
+                      return 'invalid email';
+                    }
+                    return null;
+                  },
                   decoration: InputDecoration(
                     labelText: 'Password',
                     prefixIcon: const Icon(Icons.lock_outline),
@@ -127,9 +101,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
+
                 const SizedBox(height: 20),
 
-                // زرار Login بيضاوي
                 SizedBox(
                   height: 48,
                   child: FilledButton(
@@ -141,9 +115,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: const Text('Login'),
                   ),
                 ),
+
                 const SizedBox(height: 10),
 
-                // رابط Register
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

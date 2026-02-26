@@ -14,9 +14,10 @@ class ProductDetailsScreen extends StatelessWidget {
 
     final provider = context.read<ShopProvider>();
 
-    // ❌ BUG 9: UI calculating logic directly
     double price = double.parse(product.price);
-    double finalPrice = price * 14;
+
+    // Subtle Bug: displaying VAT value instead of final price
+    double finalPrice = price * 0.14;
 
     return Scaffold(
       appBar: AppBar(title: Text(product.title)),
@@ -28,14 +29,26 @@ class ProductDetailsScreen extends StatelessWidget {
 
           const SizedBox(height: 12),
 
-          Text(product.title),
+          Text(
+            product.title,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          const SizedBox(height: 6),
 
           Text("Original Price: ${product.price} LE"),
 
-          // ❌ wrong color + wrong logic
+          const SizedBox(height: 10),
+
           Text(
-            "Final Price: $finalPrice",
-            style: const TextStyle(color: Colors.red),
+            "Final Price: $finalPrice LE",
+            style: const TextStyle(
+              color: Colors.green,
+              fontSize: 16,
+            ),
           ),
 
           const SizedBox(height: 20),

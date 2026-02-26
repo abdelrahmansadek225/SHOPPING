@@ -3,6 +3,8 @@ import '../models/product.dart';
 
 class ShopProvider with ChangeNotifier {
 
+  static const double vatRate = 14; // check this value
+
   List<Product> products = [
     const Product(
       id: 'p1',
@@ -27,48 +29,47 @@ class ShopProvider with ChangeNotifier {
     return products.firstWhere((p) => p.id == id);
   }
 
-  // ❌ BUG 1: No duplicate validation
-  // ❌ BUG 2: No empty title validation
-  // ❌ BUG 3: No negative price validation
-  void addProduct(Product product) {
-    products.add(product);
-    notifyListeners();
-  }
+   void addToCart(Product product) {
 
-  // ❌ BUG 4: remove logic without notifyListeners
-  void deleteProduct(String id) {
-    products.removeWhere((p) => p.id == id);
-  }
-
-  void addToCart(Product product) {
-
-    cart.add(product); // ❌ duplicate allowed
-
-    double price = double.parse(product.price);
-
-    // ❌ BUG 5: VAT wrong (multiplied by 14 not 0.14)
-    double vat = price * 14;
-
-    // ❌ BUG 6: Discount applied AFTER VAT
-    if (price > 10000) {
-      vat = vat - (vat * 0.10);
+    // Prevent duplicate products
+    if (!cart.any((p) => p.id == product.id)) {
+      cart.add(product);
     }
 
-    total += vat; // ❌ BUG 7: incremental wrong logic
+    recalculateTotal();
 
     notifyListeners();
   }
 
-  // ❌ BUG 8: wrong order + no rounding
+  void removeFromCart(Product product) {
+
+    cart.remove(product);
+
+    recalculateTotal();
+
+    notifyListeners();
+  }
+  // Bugs in these methods:
   double calculateFinalPrice(Product product) {
+
     double price = double.parse(product.price);
 
-    double vat = price + (price * 0.14);
+    price += price * 0.14; // check calculation order
 
     if (price > 10000) {
-      vat = vat - (vat * 0.10);
+      price -= price * 0.10;
     }
 
-    return vat;
+    return price; // check formatting/precision
+  }
+   void recalculateTotal() {
+
+    total = 0;
+
+    for (var item in cart) {
+      total += calculateFinalPrice(item);
+    }
+
+    total = double.parse(total.toStringAsFixed(2));
   }
 }
