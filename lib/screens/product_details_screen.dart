@@ -16,7 +16,7 @@ class ProductDetailsScreen extends StatelessWidget {
 
     double price = double.parse(product.price);
 
-    // Subtle Bug: displaying VAT value instead of final price
+    // bug 10
     double finalPrice = price * 0.14;
 
     return Scaffold(

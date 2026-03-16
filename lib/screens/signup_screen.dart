@@ -25,7 +25,6 @@ class _SignupScreenState extends State<SignupScreen> {
 
   void _signup() {
     if (_formKey.currentState!.validate()) {
-
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Account created successfully')),
       );
@@ -47,7 +46,6 @@ class _SignupScreenState extends State<SignupScreen> {
           key: _formKey,
           child: Column(
             children: [
-
               TextFormField(
                 controller: name,
                 decoration: const InputDecoration(labelText: "Name"),
@@ -65,10 +63,11 @@ class _SignupScreenState extends State<SignupScreen> {
                 controller: email,
                 decoration: const InputDecoration(labelText: "Email"),
                 validator: (value) {
+                  // bug 6
                   if (value == null || value.isEmpty) {
                     return "Email is required";
                   }
-                  
+
                   return null;
                 },
               ),
@@ -82,9 +81,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   labelText: "Password",
                   suffixIcon: IconButton(
                     icon: Icon(
-                      obscure
-                          ? Icons.visibility_off
-                          : Icons.visibility,
+                      obscure ? Icons.visibility_off : Icons.visibility,
                     ),
                     onPressed: () {
                       setState(() {
@@ -94,6 +91,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
                 validator: (value) {
+                  // bug 7
                   if (value == null || value.isEmpty) {
                     return "Password is required";
                   }
@@ -103,10 +101,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
               const SizedBox(height: 20),
 
-              ElevatedButton(
-                onPressed: _signup,
-                child: const Text("Signup"),
-              ),
+              ElevatedButton(onPressed: _signup, child: const Text("Signup")),
             ],
           ),
         ),

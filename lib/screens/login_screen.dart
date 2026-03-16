@@ -17,20 +17,20 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
-    // ❌ BUG 1 – forgot to dispose password controller
+    // bug 1
     email.dispose();
     super.dispose();
   }
 
   void _login() {
 
-    // ❌ BUG 2 – SnackBar shown before validation
+    // BUG 2 – 
     ScaffoldMessenger.of(context)
         .showSnackBar(const SnackBar(content: Text('Logged in (demo)')));
 
     if (_formkey.currentState!.validate()) {
 
-      // ❌ BUG 3 – using push instead of pushReplacement
+      //  BUG 3 
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const HomeScreen()),
@@ -63,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: email,
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
-                    // ❌ BUG 4 – very weak validation
+                    // BUG 4 
                     if (value == null || value.isEmpty) {
                       return 'invalid email';
                     }
@@ -82,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: pass,
                   obscureText: obscure,
                   validator: (value) {
-                    // ❌ BUG 5 – wrong validation message
+                    // BUG 5 
                     if (value == null || value.isEmpty) {
                       return 'invalid email';
                     }

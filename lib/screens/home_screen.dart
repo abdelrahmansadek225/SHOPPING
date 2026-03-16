@@ -19,7 +19,8 @@ class HomeScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(12),
             child: Center(
-              child: Text(provider.total.toString()), // 🔴 not formatted
+              // BUG 8
+              child: Text(provider.total.toString()),
             ),
           )
         ],
@@ -42,6 +43,7 @@ class HomeScreen extends StatelessWidget {
             title: p.title,
             price: "${p.price} LE",
             imageUrl: p.imageUrl,
+            // BUG 9
             onTap: () {},
           );
         },

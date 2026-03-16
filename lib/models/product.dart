@@ -1,7 +1,7 @@
 class Product {
   final String id;
   final String title;
-  final String price; // subtle design issue
+  final String price; //bug 14 
   final String imageUrl;
   final String description;
 
